@@ -11,6 +11,11 @@ const getSite = staticContext =>
     site: location.hostname.split(".")[0]
   }
 
+const renderWithContext = (staticContext, component) => {
+  const site = getSite(staticContext)
+  return <UniversalComponent {...site} page={component} />
+}
+
 export default () => (
   <div>
     <div className="nav">
@@ -24,14 +29,16 @@ export default () => (
       </Route>
       <Route
         path="/about"
-        render={({ staticContext }) => {
-          const site = getSite(staticContext)
-          return <UniversalComponent {...site} page="About" />
-        }}
+        render={({ staticContext }) =>
+          renderWithContext(staticContext, "About")
+        }
       />
-      <Route path="/article">
-        <UniversalComponent page="Article" />
-      </Route>
+      <Route
+        path="/article"
+        render={({ staticContext }) =>
+          renderWithContext(staticContext, "Article")
+        }
+      />
     </Switch>
   </div>
 )
